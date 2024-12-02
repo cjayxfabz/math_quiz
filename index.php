@@ -104,27 +104,13 @@ $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['pro
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Game</title>
-    <link rel="stylesheet" href="style1.css">
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const levelSelect = document.getElementById('level');
-            const customFields = document.querySelectorAll('#min_range, #max_range');
-
-            function toggleCustomFields() {
-                const isCustom = levelSelect.value === '3';
-                customFields.forEach(field => field.disabled = !isCustom);
-            }
-
-            levelSelect.addEventListener('change', toggleCustomFields);
-            toggleCustomFields();
-        });
-    </script>
+    <!-- Linking the external CSS file -->
+    <link rel="stylesheet" href="style2.css">
 </head>
 <body>
     <div class="container">
         <h1>Simple Math Quiz PHP</h1>
 
-        <!-- Game Over Screen -->
         <?php if ($gameOver): ?>
             <h2>Game Over</h2>
             <div class="score-board">
@@ -136,11 +122,9 @@ $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['pro
                 <button type="submit" name="restart">Restart Quiz</button>
             </form>
         <?php else: ?>
-            <!-- Quiz Not Started -->
             <?php if (!isset($_SESSION['quiz'])): ?>
                 <form method="post">
                     <h2>Settings</h2>
-
                     <label for="level">Level:</label>
                     <select id="level" name="level">
                         <option value="1">Level 1 (1-10)</option>
@@ -156,18 +140,16 @@ $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['pro
                     </select>
 
                     <label for="min_range">Custom Level: Min Range</label>
-                    <input type="number" id="min_range" name="min_range" value="1" min="1" disabled>
+                    <input type="number" id="min_range" name="min_range" value="1" min="1">
 
                     <label for="max_range">Custom Level: Max Range</label>
-                    <input type="number" id="max_range" name="max_range" value="10" min="1" disabled>
+                    <input type="number" id="max_range" name="max_range" value="10" min="1">
 
                     <label for="max_diff">Max Difference of Choices:</label>
                     <input type="number" id="max_diff" name="max_diff" value="10" min="1" max="50">
 
                     <button type="submit" name="start_quiz">Start Quiz</button>
                 </form>
-
-            <!-- Quiz In Progress -->
             <?php else: ?>
                 <h2>Question</h2>
                 <div class="question">
@@ -177,7 +159,7 @@ $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['pro
                 <form method="post">
                     <?php
                     $choices = $current[4]; 
-                    $labels = ['A', 'B', 'C', 'D'];
+                    $labels = ['A', 'B', 'C', 'D']; 
                     foreach ($choices as $index => $choice): ?>
                         <button type="submit" name="answer" value="<?php echo $choice; ?>" class="choice-button">
                             <?php echo "{$labels[$index]}: {$choice}"; ?>
