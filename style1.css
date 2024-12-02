@@ -5,6 +5,8 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
     background-color: #f3f4f6;
 }
@@ -41,6 +43,17 @@ label {
     font-weight: bold;
 }
 
+select,
+input[type="number"],
+button {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    display: block;
+}
 
 button {
     background-color: #4CAF50;
@@ -48,6 +61,10 @@ button {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
 }
 
 p {
@@ -95,4 +112,11 @@ p {
     margin: 10px 5px;
     cursor: pointer;
     text-align: center;
+}
+
+
+.question {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
