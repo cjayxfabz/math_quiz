@@ -6,4 +6,93 @@ body {
     padding: 0;
     display: flex;
     min-height: 100vh;
+    background-color: #f3f4f6;
+}
+
+.container {
+    max-width: 600px;
+    width: 100%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+    text-align: left;
+    font-weight: bold;
+}
+
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+p {
+    font-size: 16px;
+    color: #666666;
+    margin: 10px 0;
+}
+
+.score-board {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.question {
+    font-size: 18px;
+    color: #333333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.stats span {
+    font-weight: bold;
+    color: #444444;
+}
+
+.choice-button {
+    width: 100px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    margin: 10px 5px;
+    cursor: pointer;
+    text-align: center;
 }

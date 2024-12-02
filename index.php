@@ -13,6 +13,92 @@ if (!isset($_SESSION['settings'])) {
     ];
 }
 
+function generateProblem($level, $operator, $min_range = null, $max_range = null, $max_diff = 10) {
+    if ($level === 3) {
+        $min = $min_range;
+        $max = $max_range;
+    } else {
+        $min = $level === 1 ? 1 : 11;
+        $max = $level === 1 ? 10 : 100;
+    }
+
+    $num1 = rand($min, $max);
+    $num2 = rand($min, $max);
+
+    switch ($operator) {
+        case 'subtraction':
+            $answer = $num1 - $num2;
+            $symbol = '-';
+            break;
+        case 'multiplication':
+            $answer = $num1 * $num2;
+            $symbol = '×';
+            break;
+        case 'addition':
+        default:
+            $answer = $num1 + $num2;
+            $symbol = '+';
+            break;
+    }
+
+
+    $choices = [$answer];
+    while (count($choices) < 4) {
+        $option = $answer + rand(-$max_diff, $max_diff);
+        if (!in_array($option, $choices)) {
+            $choices[] = $option;
+        }
+    }
+
+    shuffle($choices); 
+
+    return [$num1, $symbol, $num2, $answer, $choices];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['start_quiz'])) {
+        $_SESSION['settings']['level'] = (int)$_POST['level'];
+        $_SESSION['settings']['operator'] = $_POST['operator'];
+        $_SESSION['settings']['num_items'] = (int)$_POST['num_items'];
+        $_SESSION['settings']['max_diff'] = (int)$_POST['max_diff'];
+
+        if ($_POST['level'] == 3) {
+            $_SESSION['settings']['min_range'] = (int)$_POST['min_range'];
+            $_SESSION['settings']['max_range'] = (int)$_POST['max_range'];
+        }
+
+        $_SESSION['quiz'] = [
+            'problems' => [],
+            'score' => 0,
+            'correct' => 0,
+            'wrong' => 0,
+        ];
+
+        for ($i = 0; $i < $_SESSION['settings']['num_items']; $i++) {
+            $_SESSION['quiz']['problems'][] = generateProblem(
+                $_SESSION['settings']['level'],
+                $_SESSION['settings']['operator'],
+                $_SESSION['settings']['min_range'],
+                $_SESSION['settings']['max_range']
+            );
+        }
+    } elseif (isset($_POST['answer'])) {
+        if (!empty($_SESSION['quiz']['problems'])) {
+            $current = array_shift($_SESSION['quiz']['problems']);
+            $userAnswer = (int)$_POST['answer'];
+
+            if ($userAnswer === $current[3]) {
+                $_SESSION['quiz']['correct']++;
+                $_SESSION['quiz']['score'] += 10;
+            } else {
+                $_SESSION['quiz']['wrong']++;
+            }
+        }
+    } elseif (isset($_POST['restart'])) {
+        unset($_SESSION['quiz']);
+    }
+}
+
 $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['problems']);
 ?>
 
@@ -43,33 +129,25 @@ $gameOver = isset($_SESSION['quiz']['problems']) && empty($_SESSION['quiz']['pro
             <?php if (!isset($_SESSION['quiz'])): ?>
     <form method="post">
     <h2>Settings</h2>
-        <div class="container">
             <label for="level">Level:</label>
             <select id="level" name="level">
                 <option value="1">Level 1 (1-10)</option>
                 <option value="2">Level 2 (11-100)</option>
                 <option value="3">Custom Level</option>
             </select>
-        </div>
-        <div class="container">
             <label for="operator">Operator:</label>
             <select id="operator" name="operator">
                 <option value="addition">Addition</option>
                 <option value="subtraction">Subtraction</option>
                 <option value="multiplication">Multiplication</option>
             </select>
-        </div>
-        <div class="container">
             <label for="min_range">Custom Level: Min Range</label>
             <input type="number" id="min_range" name="min_range" value="1" min="1">
 
             <label for="max_range">Custom Level: Max Range</label>
             <input type="number" id="max_range" name="max_range" value="10" min="1">
-        </div>
-        <div class="container">
             <label for="max_diff">Max Difference of Choices:</label>
             <input type="number" id="max_diff" name="max_diff" value="10" min="1" max="50">
-        </div>
         <button type="submit" name="start_quiz">Start Quiz</button>
     </form>
 
